@@ -33,12 +33,14 @@ public class MainActivity extends AppCompatActivity {
         tvCountdown = (TextView) findViewById(R.id.tvCountdown);
         start = (Button) findViewById(R.id.btnStart);
         stop = (Button) findViewById(R.id.btnStop);
+        stop.setVisibility(View.GONE);
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 start(view);
                 start.setVisibility(View.GONE);
+                stop.setVisibility(View.VISIBLE);
             }
         });
 
@@ -47,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 stop(view);
                 cTimer.cancel(); // stop countdown
-                Log.d("Stoptime", "time" + stopTimeRemainingMilliseconds);
-                //tidy up milliseconds
+                //tidy up milliseconds (basically code is not accurate to the millisecond, so this just ensures its tidy.
                 tvCountdown.setText(getDateFromMillis(stopTimeRemainingMilliseconds));
                 tvTimer.setText(getDateFromMillis(revTimeInMilliseconds - stopTimeRemainingMilliseconds));
             }
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 long m = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
                 long s = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished - m * 60 * 1000);
                 long ms = millisUntilFinished - m * 60 * 1000 - s * 1000;
-                stopTimeRemainingMilliseconds = millisUntilFinished;
+                stopTimeRemainingMilliseconds = millisUntilFinished; //gets remaining time for the stop tidy, could also be used for pause
                 tvCountdown.setText("" + String.format("%02d:%02d:%02d", m, s, ms));
             }
 
